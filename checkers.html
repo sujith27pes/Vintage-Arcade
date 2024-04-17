@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkers Game</title>
+  <style>
+    /* CSS styles for the Checkers game */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+      position: relative; /* Add this for absolute positioning of chatbox and player turn */
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(8, 60px);
+      grid-template-rows: repeat(8, 60px);
+      gap: 2px;
+      border: 1px solid #333;
+      background-color: #333;
+      padding: 10px;
+    }
+    .cell {
+      width: 60px;
+      height: 60px;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    .piece {
+      width: 40px;
+      height: 40px;
+      background-color: #cc0000;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease-in-out;
+    }
+    .piece.king {
+      border: 2px solid #fff;
+    }
+    .cell.red {
+      background-color: #cc0000;
+    }
+    .cell.black {
+      background-color: #000;
+    }
+    .cell.selected {
+      background-color: #ffcc00;
+    }
+    /* Chatbox styles */
+    .chatbox {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 250px;
+      height: 300px;
+      border: 1px solid #ccc;
+      background-color: #fff;
+      padding: 10px;
+      overflow-y: scroll;
+      display: none; /* Initially hidden */
+    }
+    .chatbox-input {
+      width: 100%;
+      margin-top: 10px;
+    }
+    /* Player turn window styles */
+    .player-turn {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div id="board"></div>
+  <button id="toggleChatbox">Toggle Chatbox</button>
+  <div class="chatbox" id="chatbox"></div>
+  <div class="player-turn" id="playerTurn"></div>
+  <audio id="backgroundMusic" autoplay loop>
+    <source src="background-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const board = document.getElementById('board');
+    const cells = [];
+    const chatbox = document.getElementById('chatbox');
+    const playerTurn = document.getElementById('playerTurn');
+    const toggleChatboxButton = document.getElementById('toggleChatbox');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+
+    let selectedPiece = null;
+    let currentPlayer = 'Player 1';
+
+    // Function to create a cell with the specified color
+    function createCell(color) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.classList.add(color);
+
+      // Add event listeners for drag-and-drop
+      cell.draggable = true;
+      cell.addEventListener('dragstart', handleDragStart);
+      cell.addEventListener('dragover', handleDragOver);
+      cell.addEventListener('drop', handleDrop);
+
+      return cell;
+    }
+
+    // Function to create a piece
+    function createPiece() {
+      const piece = document.createElement('div');
+      piece.classList.add('piece');
+
+      // Add event listeners for drag-and-drop
+      piece.draggable = true;
+      piece.addEventListener('dragstart', handlePieceDragStart);
+
+      return piece;
+    }
+
+    // Create the game board
+    for (let i = 0; i < 8; i++) {
+      const row = [];
+      for (let j = 0; j < 8; j++) {
+        const cellColor = (i + j) % 2 === 0 ? 'black' : 'red';
+        const cell = createCell(cellColor);
+        board.appendChild(cell);
+        row.push(cell);
+      }
+      cells.push(row);
+    }
+
+    // Function to place pieces on the board
+    function setupPieces() {
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 8; j++) {
+          if ((i + j) % 2 !== 0) {
+            const piece = createPiece();
+            cells[i][j].appendChild(piece);
+          }
+        }
+      }
+
+      for (let i = 5; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+          if ((i + j) % 2 !== 0) {
+            const piece = createPiece();
+            piece.classList.add('king');
+            cells[i][j].appendChild(piece);
+          }
+        }
+      }
+    }
+
+    setupPieces(); // Initial placement of pieces
+
+    // Drag and drop event handlers
+    function handlePieceDragStart(event) {
+      selectedPiece = event.target;
+    }
+
+    function handleDragStart(event) {
+      event.dataTransfer.setData('text/plain', event.target.id);
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+    }
+
+    function handleDrop(event) {
+      event.preventDefault();
+      const cell = event.target;
+      cell.appendChild(selectedPiece);
+    }
+
+    // Chatbox functionality
+    function sendMessage(message) {
+      const messageElement = document.createElement('div');
+      messageElement.textContent = message;
+      chatbox.appendChild(messageElement);
+      chatbox.scrollTop = chatbox.scrollHeight; // Auto scroll to bottom
+    }
+
+    // Toggle chatbox visibility
+    toggleChatboxButton.addEventListener('click', () => {
+      chatbox.style.display = chatbox.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Player turn window
+    function updatePlayerTurn() {
+      playerTurn.textContent = `Current Turn: ${currentPlayer}`;
+    }
+
+    // Example chat messages and player turns
+    sendMessage('Welcome to Checkers!');
+    updatePlayerTurn();
+
+    // Background music control
+    backgroundMusic.volume = 0.2; // Set volume to 20%
+  </script>
+</body>
+</html>

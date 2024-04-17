@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complex Scrabble Game</title>
+  <style>
+    /* CSS styles for the Scrabble game */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+    #board {
+      display: grid;
+      grid-template-columns: repeat(15, 40px);
+      grid-template-rows: repeat(15, 40px);
+      gap: 2px;
+      border: 1px solid #333;
+      background-color: #f0f0f0;
+      margin-bottom: 20px;
+    }
+    .tile {
+      width: 40px;
+      height: 40px;
+      background-color: #ffcc00;
+      border: 1px solid #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .tile:hover {
+      background-color: #ffdd00;
+    }
+    .rack {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .rack .tile {
+      height: 60px;
+    }
+    .chat-container {
+      position: fixed;
+      top: 50px;
+      right: 20px;
+      width: 300px;
+      height: calc(100% - 100px);
+      border: 1px solid #ccc;
+      background-color: #fff;
+      overflow-y: scroll;
+      padding: 10px;
+    }
+    .chat-message {
+      margin-bottom: 10px;
+    }
+    .chat-input {
+      width: calc(100% - 20px);
+      margin: 0 10px;
+      padding: 5px;
+    }
+    .chat-send {
+      margin-left: 10px;
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    .player-turn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #fff;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="player-turn"></div>
+  <div id="board"></div>
+  <div class="rack"></div>
+  <div class="chat-container">
+    <div class="chat-messages"></div>
+    <input type="text" class="chat-input" placeholder="Type your message...">
+    <button class="chat-send">Send</button>
+  </div>
+
+  <script>
+    const board = document.getElementById('board');
+    const rack = document.querySelector('.rack');
+    const chatMessages = document.querySelector('.chat-messages');
+    const chatInput = document.querySelector('.chat-input');
+    const chatSend = document.querySelector('.chat-send');
+    const playerTurn = document.querySelector('.player-turn');
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.repeat(3); // Repeat for more letters
+
+    let currentPlayer = 1;
+
+    // Function to create a draggable tile
+    function createTile(letter, draggable = true) {
+      const tile = document.createElement('div');
+      tile.classList.add('tile');
+      tile.textContent = letter;
+      tile.setAttribute('draggable', draggable);
+      return tile;
+    }
+
+    // Initialize player's rack
+    for (let i = 0; i < 7; i++) {
+      const letter = getRandomLetter();
+      const tile = createTile(letter);
+      rack.appendChild(tile);
+    }
+
+    // Function to generate a random letter
+    function getRandomLetter() {
+      return letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    // Handle tile dragging
+    document.addEventListener('dragstart', (event) => {
+      event.dataTransfer.setData('text/plain', event.target.textContent);
+    });
+
+    // Handle dropping tiles on the board
+    board.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
+
+    board.addEventListener('drop', (event) => {
+      event.preventDefault();
+      const letter = event.dataTransfer.getData('text/plain');
+      const tile = createTile(letter, false);
+      event.target.appendChild(tile);
+
+      // Change player turn
+      currentPlayer = currentPlayer === 1 ? 2 : 1;
+      updatePlayerTurn();
+    });
+
+    // Update player turn display
+    function updatePlayerTurn() {
+      playerTurn.textContent = `Player ${currentPlayer}'s Turn`;
+    }
+
+    updatePlayerTurn(); // Initial display of player turn
+
+    // Handle sending chat messages
+    chatSend.addEventListener('click', () => {
+      const message = chatInput.value.trim();
+      if (message !== '') {
+        const chatMessage = document.createElement('div');
+        chatMessage.classList.add('chat-message');
+        chatMessage.textContent = message;
+        chatMessages.appendChild(chatMessage);
+        chatInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>

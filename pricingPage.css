@@ -1,0 +1,84 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 50px 20px;
+}
+
+.pricing {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 30px;
+}
+
+.plan {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.plan:hover {
+    transform: translateY(-5px);
+}
+
+.plan h2 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.plan p {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #007bff;
+}
+
+.plan ul {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.plan ul li {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.cta {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.cta:hover {
+    background-color: #0062cc;
+}
