@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VintageArcade - Contact</title>
+  <link rel="stylesheet" href="landingPage.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    /* Additional styles for contact form */
+    .contact-form {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 2px solid #333;
+      border-radius: 10px;
+      background-color: #f0f0f0;
+    }
+    .contact-form label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .contact-form textarea {
+      height: 150px;
+    }
+    .contact-form button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #333;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 20px;
+    }
+    .contact-form button:hover {
+      background-color: #0062cc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="logo">VintageArcade</a>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contactPage.html">Contact</a></li>
+        <li><a href="pricingPage.html">Pricing</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="contact-form">
+      <h1>Contact Us</h1>
+      <form action="#" method="POST">
+        <label for="name">Your Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="email">Your Email:</label>
+        <input type="email" id="email" name="email" required>
+        <label for="message">Your Message:</label>
+        <textarea id="message" name="message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2024 VintageArcade. Established by PES University Students.</p>
+  </footer>
+  <script src="contactPage.js"></script>
+</body>
+</html>
